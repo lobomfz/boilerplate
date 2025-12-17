@@ -1,5 +1,6 @@
 {
   "lockfileVersion": 1,
+  "configVersion": 0,
   "workspaces": {
     "": {
       "name": "boilerplate",
@@ -47,6 +48,7 @@
         "oxlint": "^1.30.0",
         "prisma": "^7.0.0",
         "prisma-kysely": "^2.2.1",
+        "prismark": "^0.0.4",
         "typescript": "^5.7.2",
         "vite": "^7.1.7",
       },
@@ -799,6 +801,8 @@
     "prisma": ["prisma@7.1.0", "", { "dependencies": { "@prisma/config": "7.1.0", "@prisma/dev": "0.15.0", "@prisma/engines": "7.1.0", "@prisma/studio-core": "0.8.2", "mysql2": "3.15.3", "postgres": "3.4.7" }, "peerDependencies": { "better-sqlite3": ">=9.0.0", "typescript": ">=5.4.0" }, "optionalPeers": ["better-sqlite3", "typescript"], "bin": { "prisma": "build/index.js" } }, "sha512-dy/3urE4JjhdiW5b09pGjVhGI7kPESK2VlCDrCqeYK5m5SslAtG5FCGnZWP7E8Sdg+Ow1wV2mhJH5RTFL5gEsw=="],
 
     "prisma-kysely": ["prisma-kysely@2.2.1", "", { "dependencies": { "@mrleebo/prisma-ast": "^0.13.0", "@prisma/generator-helper": "6.16.2", "@prisma/internals": "6.16.2", "typescript": "^5.9.2", "zod": "^4.1.5" }, "peerDependencies": { "prisma": "~6.16" }, "bin": { "prisma-kysely": "dist/bin.js" } }, "sha512-hxue1/ZzyBJ8qx6bSBNUjF+A+tl78PM5Sg/wIAIph9hxwdiGcWTr8JPQveva4zvA57bwRJhAJjDvdy8MK4UNuA=="],
+
+    "prismark": ["prismark@0.0.4", "", { "dependencies": { "@prisma/generator-helper": "^6.16.1", "arktype": "^2.1.22" }, "bin": { "prismark": "dist/cli.js" } }, "sha512-YBoIg6D+VqVSGjOeK3bwsKTqjIb0ljVpgY5J8skK7CD9Cvg+kFVvA5qIPORhAyKfJ1zIagc6Vxs/RpjmJsWoJA=="],
 
     "prompts": ["prompts@2.4.2", "", { "dependencies": { "kleur": "^3.0.3", "sisteransi": "^1.0.5" } }, "sha512-NxNv/kLguCA7p3jE8oL2aEBsrJWgAakBpgmgK6lpPWV+WuOmY6r2/zbAVnP+T8bQlA0nzHXSJSJW0Hq7ylaD2Q=="],
 

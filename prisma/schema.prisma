@@ -9,6 +9,13 @@ generator kysely {
   fileName = "types.ts"
 }
 
+generator prismark {
+  provider = "prismark"
+
+  output   = "../src/api/db/generated"
+  fileName = "schemas.ts"
+}
+
 model users {
   id       Int    @id @default(autoincrement())
   name     String

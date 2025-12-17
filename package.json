@@ -16,6 +16,7 @@
 		"oxlint": "^1.30.0",
 		"prisma": "^7.0.0",
 		"prisma-kysely": "^2.2.1",
+		"prismark": "^0.0.4",
 		"typescript": "^5.7.2",
 		"vite": "^7.1.7"
 	},

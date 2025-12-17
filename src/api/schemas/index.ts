@@ -1,8 +1,5 @@
-import { type } from "arktype";
+import { users_plain } from "../db/generated/schemas";
 
 export const EndpointSchemas = {
-  authLogin: type({
-    name: "string",
-    password: "string",
-  }),
+  authLogin: users_plain.pick("name", "password"),
 };
