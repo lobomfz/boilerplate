@@ -5,7 +5,7 @@
 		"jsx": "react-jsx",
 		"module": "ESNext",
 		"lib": ["ESNext", "DOM", "DOM.Iterable"],
-		"types": ["vite/client", "bun"],
+		"types": ["bun"],
 
 		"moduleResolution": "bundler",
 		"allowImportingTsExtensions": true,

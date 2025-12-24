@@ -4,8 +4,6 @@ import { routeTree } from "./routeTree.gen.ts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "./components/ui/sonner.tsx";
 
-import "./index.css";
-
 export const queryClient = new QueryClient();
 
 const router = createRouter({

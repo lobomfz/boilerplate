@@ -3,12 +3,14 @@
 	"type": "module",
 	"private": true,
 	"devDependencies": {
+		"@tailwindcss/cli": "^4.1.17",
+		"@tanstack/router-cli": "^1.143.4",
 		"@types/bun": "^1.3.3",
 		"@types/node": "^22.10.2",
 		"@types/react": "^19.2.0",
 		"@types/react-dom": "^19.2.0",
 		"@typescript/native-preview": "^7.0.0-dev.20251216.1",
-		"@vitejs/plugin-react": "^5.0.4",
+		"bun-plugin-tailwind": "^0.1.1",
 		"concurrently": "^9.2.1",
 		"knip": "^5.74.0",
 		"lefthook": "^2.0.12",
@@ -17,8 +19,7 @@
 		"prisma": "^7.0.0",
 		"prisma-kysely": "^2.2.1",
 		"prismark": "^0.0.4",
-		"typescript": "^5.7.2",
-		"vite": "^7.1.7"
+		"typescript": "^5.7.2"
 	},
 	"peerDependencies": {
 		"typescript": "^5"
@@ -30,10 +31,8 @@
 		"@orpc/tanstack-query": "^1.11.3",
 		"@radix-ui/react-label": "^2.1.8",
 		"@radix-ui/react-slot": "^1.2.4",
-		"@tailwindcss/vite": "^4.1.17",
 		"@tanstack/react-query": "^5.90.10",
 		"@tanstack/react-router": "^1.139.3",
-		"@tanstack/router-plugin": "^1.132.0",
 		"arktype": "^2.1.27",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
@@ -54,11 +53,8 @@
 		"zustand": "^5.0.9"
 	},
 	"scripts": {
-		"dev": "concurrently 'vite --port 3000' 'bun --watch src/api/app.ts'",
-		"dev:fe": "vite --port 3000",
-		"dev:be": "bun --watch src/api/app.ts",
-		"build": "vite build",
-		"serve": "vite preview",
+		"dev": "concurrently 'tsr watch' 'bun --watch src/server.ts'",
+		"tsgo": "tsgo --project tsconfig.json",
 		"oxlint": "oxlint src scripts --ignore-pattern='*.gen.ts'",
 		"seed": "bun run scripts/seed.ts"
 	}

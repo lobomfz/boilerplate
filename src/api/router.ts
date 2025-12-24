@@ -10,6 +10,6 @@ export const router = {
 
     logout: protectedProcedure.handler(({ context }) => Auth.logout(context.resHeaders)),
 
-    me: protectedProcedure.handler(({ context }) => context.user ?? null),
+    me: protectedProcedure.handler(({ context }) => context.user),
   },
 };

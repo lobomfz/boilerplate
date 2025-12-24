@@ -1,11 +1,11 @@
-import type { API } from "./api/app";
+import type { API } from "./server";
 import { createORPCClient } from "@orpc/client";
 import { RPCLink } from "@orpc/client/fetch";
 import type { RouterClient, InferRouterInputs, InferRouterOutputs } from "@orpc/server";
 import { createTanstackQueryUtils } from "@orpc/tanstack-query";
 
 const link = new RPCLink({
-  url: `${import.meta.env.VITE_API_URL ?? "http://localhost:5400"}/rpc`,
+  url: new URL("/rpc", window.location.origin).href,
   fetch: (input, init) => fetch(input, { ...init, credentials: "include" }),
 });
 

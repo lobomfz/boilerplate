@@ -1,7 +1,6 @@
-import { Outlet, createRootRouteWithContext, redirect } from "@tanstack/react-router";
+import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import type { QueryClient } from "@tanstack/react-query";
 
-import { orpc } from "@/client";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useThemeStore } from "@/stores/theme";
@@ -11,18 +10,6 @@ interface RouterContext {
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-  beforeLoad: async ({ context, location }) => {
-    if (location.pathname === "/login") {
-      return;
-    }
-
-    const user = await context.queryClient.fetchQuery(orpc.auth.me.queryOptions());
-
-    if (!user) {
-      throw redirect({ to: "/login" });
-    }
-  },
-
   component: RootComponent,
 });
 
