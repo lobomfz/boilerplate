@@ -29,8 +29,8 @@ const AppIndexRoute = AppIndexRouteImport.update({
 } as any);
 
 export interface FileRoutesByFullPath {
-	"/login": typeof LoginRoute;
 	"/": typeof AppIndexRoute;
+	"/login": typeof LoginRoute;
 }
 export interface FileRoutesByTo {
 	"/login": typeof LoginRoute;
@@ -44,7 +44,7 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
 	fileRoutesByFullPath: FileRoutesByFullPath;
-	fullPaths: "/login" | "/";
+	fullPaths: "/" | "/login";
 	fileRoutesByTo: FileRoutesByTo;
 	to: "/login" | "/";
 	id: "__root__" | "/_app" | "/login" | "/_app/";
@@ -67,7 +67,7 @@ declare module "@tanstack/react-router" {
 		"/_app": {
 			id: "/_app";
 			path: "";
-			fullPath: "";
+			fullPath: "/";
 			preLoaderRoute: typeof AppRouteImport;
 			parentRoute: typeof rootRouteImport;
 		};

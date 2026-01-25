@@ -22,6 +22,7 @@
 		"@hookform/resolvers": "^5.2.2",
 		"@lobomfz/db": "^0.1.0",
 		"@orpc/client": "^1.11.3",
+		"@orpc/experimental-publisher": "^1.13.4",
 		"@orpc/server": "^1.11.3",
 		"@orpc/tanstack-query": "^1.11.3",
 		"@radix-ui/react-label": "^2.1.8",

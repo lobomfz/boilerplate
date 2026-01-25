@@ -1,16 +1,20 @@
 import { os, ORPCError } from "@orpc/server";
 import { getCookie } from "@orpc/server/helpers";
-import { RequestHeadersPluginContext, ResponseHeadersPluginContext } from "@orpc/server/plugins";
+import type { Selectable } from "kysely";
 
 import { JWT } from "./jwt";
 import { db } from "@/api/db/connection";
 import type { users } from "../db/connection";
 
-export type User = users;
+export type User = Selectable<users>;
 
-interface Context extends RequestHeadersPluginContext, ResponseHeadersPluginContext {}
+interface Context {
+	reqHeaders?: Headers;
+	resHeaders?: Headers;
+	user?: User | null;
+}
 
-async function getUser(token: string | undefined) {
+export async function getUser(token: string | undefined) {
 	if (!token) {
 		return null;
 	}
@@ -27,8 +31,11 @@ async function getUser(token: string | undefined) {
 const base = os.$context<Context>();
 
 const authMiddleware = base.middleware(async ({ context, next }) => {
-	const token = getCookie(context.reqHeaders, "session");
+	if (context.user !== undefined) {
+		return next({ context: { user: context.user } });
+	}
 
+	const token = context.reqHeaders ? getCookie(context.reqHeaders, "session") : undefined;
 	const user = await getUser(token);
 
 	return next({ context: { user } });
