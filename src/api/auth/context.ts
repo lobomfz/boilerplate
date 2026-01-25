@@ -4,43 +4,42 @@ import { RequestHeadersPluginContext, ResponseHeadersPluginContext } from "@orpc
 
 import { JWT } from "./jwt";
 import { db } from "@/api/db/connection";
-import { Selectable } from "kysely";
-import { users } from "../db/generated/types";
+import type { users } from "../db/connection";
 
-export type User = Selectable<users>;
+export type User = users;
 
 interface Context extends RequestHeadersPluginContext, ResponseHeadersPluginContext {}
 
 async function getUser(token: string | undefined) {
-  if (!token) {
-    return null;
-  }
+	if (!token) {
+		return null;
+	}
 
-  const payload = await JWT.verify(token);
+	const payload = await JWT.verify(token);
 
-  if (!payload) {
-    return null;
-  }
+	if (!payload) {
+		return null;
+	}
 
-  return db.selectFrom("users").where("id", "=", payload.userId).selectAll().executeTakeFirst();
+	return db.selectFrom("users").where("id", "=", payload.userId).selectAll().executeTakeFirst();
 }
 
 const base = os.$context<Context>();
 
 const authMiddleware = base.middleware(async ({ context, next }) => {
-  const token = getCookie(context.reqHeaders, "session");
+	const token = getCookie(context.reqHeaders, "session");
 
-  const user = await getUser(token);
+	const user = await getUser(token);
 
-  return next({ context: { user } });
+	return next({ context: { user } });
 });
 
 export const publicProcedure = base.use(authMiddleware);
 
 export const protectedProcedure = publicProcedure.use(({ context, next }) => {
-  if (!context.user) {
-    throw new ORPCError("UNAUTHORIZED");
-  }
+	if (!context.user) {
+		throw new ORPCError("UNAUTHORIZED");
+	}
 
-  return next({ context: { user: context.user } });
+	return next({ context: { user: context.user } });
 });

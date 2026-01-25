@@ -14,87 +14,87 @@ import { Route as AppRouteImport } from "./routes/_app";
 import { Route as AppIndexRouteImport } from "./routes/_app/index";
 
 const LoginRoute = LoginRouteImport.update({
-  id: "/login",
-  path: "/login",
-  getParentRoute: () => rootRouteImport,
+	id: "/login",
+	path: "/login",
+	getParentRoute: () => rootRouteImport,
 } as any);
 const AppRoute = AppRouteImport.update({
-  id: "/_app",
-  getParentRoute: () => rootRouteImport,
+	id: "/_app",
+	getParentRoute: () => rootRouteImport,
 } as any);
 const AppIndexRoute = AppIndexRouteImport.update({
-  id: "/",
-  path: "/",
-  getParentRoute: () => AppRoute,
+	id: "/",
+	path: "/",
+	getParentRoute: () => AppRoute,
 } as any);
 
 export interface FileRoutesByFullPath {
-  "/login": typeof LoginRoute;
-  "/": typeof AppIndexRoute;
+	"/login": typeof LoginRoute;
+	"/": typeof AppIndexRoute;
 }
 export interface FileRoutesByTo {
-  "/login": typeof LoginRoute;
-  "/": typeof AppIndexRoute;
+	"/login": typeof LoginRoute;
+	"/": typeof AppIndexRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  "/_app": typeof AppRouteWithChildren;
-  "/login": typeof LoginRoute;
-  "/_app/": typeof AppIndexRoute;
+	__root__: typeof rootRouteImport;
+	"/_app": typeof AppRouteWithChildren;
+	"/login": typeof LoginRoute;
+	"/_app/": typeof AppIndexRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/login" | "/";
-  fileRoutesByTo: FileRoutesByTo;
-  to: "/login" | "/";
-  id: "__root__" | "/_app" | "/login" | "/_app/";
-  fileRoutesById: FileRoutesById;
+	fileRoutesByFullPath: FileRoutesByFullPath;
+	fullPaths: "/login" | "/";
+	fileRoutesByTo: FileRoutesByTo;
+	to: "/login" | "/";
+	id: "__root__" | "/_app" | "/login" | "/_app/";
+	fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  AppRoute: typeof AppRouteWithChildren;
-  LoginRoute: typeof LoginRoute;
+	AppRoute: typeof AppRouteWithChildren;
+	LoginRoute: typeof LoginRoute;
 }
 
 declare module "@tanstack/react-router" {
-  interface FileRoutesByPath {
-    "/login": {
-      id: "/login";
-      path: "/login";
-      fullPath: "/login";
-      preLoaderRoute: typeof LoginRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/_app": {
-      id: "/_app";
-      path: "";
-      fullPath: "";
-      preLoaderRoute: typeof AppRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/_app/": {
-      id: "/_app/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof AppIndexRouteImport;
-      parentRoute: typeof AppRoute;
-    };
-  }
+	interface FileRoutesByPath {
+		"/login": {
+			id: "/login";
+			path: "/login";
+			fullPath: "/login";
+			preLoaderRoute: typeof LoginRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/_app": {
+			id: "/_app";
+			path: "";
+			fullPath: "";
+			preLoaderRoute: typeof AppRouteImport;
+			parentRoute: typeof rootRouteImport;
+		};
+		"/_app/": {
+			id: "/_app/";
+			path: "/";
+			fullPath: "/";
+			preLoaderRoute: typeof AppIndexRouteImport;
+			parentRoute: typeof AppRoute;
+		};
+	}
 }
 
 interface AppRouteChildren {
-  AppIndexRoute: typeof AppIndexRoute;
+	AppIndexRoute: typeof AppIndexRoute;
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppIndexRoute: AppIndexRoute,
+	AppIndexRoute: AppIndexRoute,
 };
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren);
 
 const rootRouteChildren: RootRouteChildren = {
-  AppRoute: AppRouteWithChildren,
-  LoginRoute: LoginRoute,
+	AppRoute: AppRouteWithChildren,
+	LoginRoute: LoginRoute,
 };
 export const routeTree = rootRouteImport
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+	._addFileChildren(rootRouteChildren)
+	._addFileTypes<FileRouteTypes>();

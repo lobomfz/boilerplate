@@ -1,5 +1,5 @@
-import { users_plain } from "../db/generated/schemas";
+import { usersSchema } from "../db/connection";
 
 export const EndpointSchemas = {
-  authLogin: users_plain.pick("name", "password"),
+	authLogin: usersSchema.pick("name", "password"),
 };
