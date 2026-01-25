@@ -29,9 +29,7 @@ export const wsRouter = {
 		me: protectedProcedure.handler(({ context }) => context.user),
 	},
 
-	notifications: protectedProcedure.handler(async function* ({ context, signal }) {
-		for await (const event of PubSub.subscribe("notification", String(context.user.id), signal)) {
-			yield event;
-		}
-	}),
+	notifications: protectedProcedure.handler(({ context, signal }) =>
+		PubSub.subscribe("notification", String(context.user.id), signal),
+	),
 };

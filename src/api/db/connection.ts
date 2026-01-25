@@ -1,5 +1,6 @@
 import { type } from "arktype";
 import { Database, autoIncrement } from "@lobomfz/db";
+import { envVariables } from "@/api/config/env";
 
 const user_type = type.enumerated("admin", "user");
 
@@ -11,7 +12,7 @@ const usersSchema = type({
 });
 
 const database = new Database({
-	path: `${import.meta.dir}/db.sqlite`,
+	path: envVariables.DATABASE_URL,
 	tables: {
 		users: usersSchema,
 	},
