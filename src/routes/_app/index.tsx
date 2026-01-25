@@ -35,17 +35,17 @@ function HomePage() {
 		<div className="flex min-h-screen items-center justify-center bg-background">
 			<Card className="w-full max-w-md">
 				<CardHeader>
-					<CardTitle className="text-2xl font-bold">Olá, {user?.name}</CardTitle>
+					<CardTitle className="text-2xl font-bold">Hello, {user?.name}</CardTitle>
 				</CardHeader>
 
 				<CardContent className="space-y-4">
-					<p className="text-muted-foreground">Você está logado no sistema.</p>
+					<p className="text-muted-foreground">You are logged in.</p>
 
 					<div className="rounded-lg border p-4">
 						<div className="mb-3 flex items-center justify-between">
-							<span className="text-sm font-medium">Notificações (WebSocket)</span>
+							<span className="text-sm font-medium">Notifications (WebSocket)</span>
 							{isListening && (
-								<span className="text-xs text-green-500 animate-pulse">Conectado...</span>
+								<span className="text-xs text-green-500 animate-pulse">Connected...</span>
 							)}
 						</div>
 
@@ -57,7 +57,7 @@ function HomePage() {
 								className="flex-1"
 							>
 								<Bell className="mr-2 size-4" />
-								{isListening ? "Ouvindo..." : "Conectar"}
+								{isListening ? "Listening..." : "Connect"}
 							</Button>
 
 							<Button variant="outline" onClick={sendTestNotification} disabled={!isListening}>
@@ -79,7 +79,7 @@ function HomePage() {
 
 					<Button variant="outline" onClick={logout} className="w-full">
 						<LogOut className="mr-2 size-4" />
-						Sair
+						Sign out
 					</Button>
 				</CardContent>
 			</Card>

@@ -19,8 +19,8 @@ export function useLogin() {
 
 			window.location.href = "/";
 		} catch {
-			toast.error("Erro ao fazer login", {
-				description: "Nome ou senha inválidos",
+			toast.error("Login failed", {
+				description: "Invalid name or password",
 				position: "bottom-left",
 			});
 		}
