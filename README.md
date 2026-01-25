@@ -44,7 +44,9 @@ notifications: protectedProcedure.handler(({ context, signal }) =>
 ### Consuming on frontend
 
 ```typescript
-const { data } = orpcWs.notifications.useSuspenseQuery();
+const { data: events } = useQuery(
+  orpcWs.notifications.experimental_streamedOptions({ enabled: true }),
+);
 ```
 
 ## Dev
