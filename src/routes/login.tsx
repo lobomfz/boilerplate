@@ -1,13 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LogIn } from "lucide-react";
-import { useFormContext } from "react-hook-form";
+import { FormProvider, useFormContext } from "react-hook-form";
 
+import type { AuthSchemas } from "@/api/auth/schemas";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLogin } from "@/hooks/use-login";
-import type { LoginInput } from "@/types/auth";
+
+type LoginInput = typeof AuthSchemas.login.infer;
 
 export const Route = createFileRoute("/login")({
 	component: LoginPage,
@@ -15,7 +17,10 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
 	return (
-		<div className="flex min-h-screen items-center justify-center bg-background">
+		<div
+			data-component="login-page"
+			className="flex min-h-screen items-center justify-center bg-background"
+		>
 			<Card className="w-full max-w-sm">
 				<LoginCardHeader />
 
@@ -39,12 +44,12 @@ function LoginCardHeader() {
 }
 
 function LoginCardContent({ children }: { children: React.ReactNode }) {
-	const { methods, onSubmit, FormProvider } = useLogin();
+	const { methods, handleSubmit } = useLogin();
 
 	return (
 		<CardContent>
 			<FormProvider {...methods}>
-				<form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-4">
+				<form onSubmit={handleSubmit} className="space-y-4">
 					{children}
 				</form>
 			</FormProvider>
@@ -68,13 +73,18 @@ function LoginCardName() {
 				id="name"
 				type="text"
 				placeholder="Your name"
+				data-slot="name-input"
 				className="bg-background border border-border"
 				aria-invalid={!!nameError}
 				{...register("name")}
 				required
 			/>
 
-			{nameError && <p className="text-sm text-red-500">{nameError}</p>}
+			{nameError && (
+				<p data-component="login-name-error" className="text-sm text-red-500">
+					{nameError}
+				</p>
+			)}
 		</div>
 	);
 }
@@ -94,13 +104,18 @@ function LoginCardPassword() {
 				id="password"
 				type="password"
 				placeholder="Your password"
+				data-slot="password-input"
 				className="bg-background border border-border"
 				aria-invalid={!!passwordError}
 				{...register("password")}
 				required
 			/>
 
-			{passwordError && <p className="text-sm text-red-500">{passwordError}</p>}
+			{passwordError && (
+				<p data-component="login-password-error" className="text-sm text-red-500">
+					{passwordError}
+				</p>
+			)}
 		</div>
 	);
 }
@@ -111,9 +126,16 @@ function LoginCardFooter() {
 	} = useFormContext<LoginInput>();
 
 	return (
-		<Button type="submit" className="w-full" disabled={isSubmitting}>
+		<Button
+			type="submit"
+			data-slot="submit"
+			data-submitting={isSubmitting}
+			className="w-full"
+			disabled={isSubmitting}
+		>
 			<LogIn className="mr-2 size-4" />
-			{isSubmitting ? "Signing in..." : "Sign in"}
+			{isSubmitting && "Signing in..."}
+			{!isSubmitting && "Sign in"}
 		</Button>
 	);
 }

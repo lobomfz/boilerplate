@@ -1,23 +1,24 @@
+import { AuthSchemas } from "./auth/schemas";
 import { protectedProcedure, publicProcedure } from "./auth/context";
 import { Auth } from "./auth/login";
 import { PubSub } from "./pubsub";
-import { EndpointSchemas } from "./schemas";
 
 export const router = {
 	auth: {
 		login: publicProcedure
-			.input(EndpointSchemas.authLogin)
-			.handler(({ input, context }) => Auth.login(input, context.resHeaders)),
+			.input(AuthSchemas.login)
+			.handler(({ input, context }) => new Auth(context.resHeaders).login(input)),
 
-		logout: protectedProcedure.handler(({ context }) => Auth.logout(context.resHeaders)),
+		logout: protectedProcedure.handler(({ context }) => new Auth(context.resHeaders).logout()),
 
 		me: protectedProcedure.handler(({ context }) => context.user),
 	},
 
 	testNotification: protectedProcedure.handler(async ({ context }) => {
-		await PubSub.publish("notification", String(context.user.id), {
-			title: "Test Notification",
-			message: `Hello ${context.user.name}! This is a test notification at ${new Date().toLocaleTimeString()}`,
+		await PubSub.publish("notification", context.user, {
+			id: crypto.randomUUID(),
+			title: "Test notification",
+			message: "You received a test notification.",
 		});
 
 		return { sent: true };
@@ -30,6 +31,6 @@ export const wsRouter = {
 	},
 
 	notifications: protectedProcedure.handler(({ context, signal }) =>
-		PubSub.subscribe("notification", String(context.user.id), signal),
+		PubSub.subscribe("notification", context.user, signal),
 	),
 };

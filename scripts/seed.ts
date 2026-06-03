@@ -1,9 +1,6 @@
-import { db } from "../src/api/db/connection";
+import { DbUsers } from "../src/api/db/users";
 
-await db
-  .insertInto("users")
-  .values({
-    name: "admin",
-    password: Bun.password.hashSync("password"),
-  })
-  .execute();
+await DbUsers.create({
+	name: "admin",
+	password: await Bun.password.hash("password"),
+});

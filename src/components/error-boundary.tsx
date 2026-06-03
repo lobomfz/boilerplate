@@ -1,11 +1,11 @@
-import { Component, type ReactNode } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { AlertCircle, RefreshCw } from "lucide-react";
+import { Component, type ReactNode } from "react";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface Props {
 	children: ReactNode;
-	fallback?: ReactNode;
 }
 
 interface State {
@@ -23,16 +23,16 @@ export class ErrorBoundary extends Component<Props, State> {
 		return { hasError: true, error };
 	}
 
+	componentDidCatch(error: Error, info: React.ErrorInfo) {
+		console.error("ErrorBoundary caught:", error, info);
+	}
+
 	handleRetry = () => {
 		this.setState({ hasError: false, error: null });
 	};
 
 	render() {
 		if (this.state.hasError) {
-			if (this.props.fallback) {
-				return this.props.fallback;
-			}
-
 			return (
 				<Card className="border-destructive/50 bg-destructive/5">
 					<CardContent className="p-6 sm:p-8">

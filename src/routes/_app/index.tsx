@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
-import { LogOut, Bell, Send } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { Bell, LogOut, Send } from "lucide-react";
+import { useState } from "react";
 
 import { orpc, orpcWs } from "@/client";
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,7 @@ function HomePage() {
 		<div className="flex min-h-screen items-center justify-center bg-background">
 			<Card className="w-full max-w-md">
 				<CardHeader>
-					<CardTitle className="text-2xl font-bold">Hello, {user?.name}</CardTitle>
+					<CardTitle className="text-2xl font-bold">Hello, {user.name}</CardTitle>
 				</CardHeader>
 
 				<CardContent className="space-y-4">
@@ -50,14 +50,10 @@ function HomePage() {
 						</div>
 
 						<div className="flex gap-2 mb-3">
-							<Button
-								variant="secondary"
-								onClick={() => setEnabled(true)}
-								disabled={isListening}
-								className="flex-1"
-							>
+							<Button variant="secondary" onClick={() => setEnabled((v) => !v)} className="flex-1">
 								<Bell className="mr-2 size-4" />
-								{isListening ? "Listening..." : "Connect"}
+								{isListening && "Disconnect"}
+								{!isListening && "Connect"}
 							</Button>
 
 							<Button variant="outline" onClick={sendTestNotification} disabled={!isListening}>
@@ -67,8 +63,8 @@ function HomePage() {
 
 						{events && events.length > 0 && (
 							<div className="space-y-2 text-sm">
-								{events.map((e, i) => (
-									<div key={i} className="rounded bg-muted p-2">
+								{events.map((e) => (
+									<div key={e.id} className="rounded bg-muted p-2">
 										<div className="font-medium">{e.title}</div>
 										<div className="text-muted-foreground">{e.message}</div>
 									</div>

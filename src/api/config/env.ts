@@ -1,17 +1,11 @@
+import "../arktype";
 import { type } from "arktype";
 
-export const envSchema = type({
+const envSchema = type({
 	DATABASE_URL: "string",
 	JWT_SECRET: "string",
-	"NODE_ENV?": "'development' | 'production'",
+	"NODE_ENV?": "'development' | 'production' | 'test'",
+	PORT: type("string.numeric.parse").default("3000"),
 });
 
-const result = envSchema(process.env);
-
-if (result instanceof type.errors) {
-	console.error("Invalid environment variables:");
-	console.error(result.summary);
-	process.exit(1);
-}
-
-export const envVariables = result;
+export const envVariables = envSchema.assert(process.env);

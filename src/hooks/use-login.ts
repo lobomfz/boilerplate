@@ -1,34 +1,35 @@
-import { FormProvider, type SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "@/lib/schemas";
+import { arktypeResolver } from "@hookform/resolvers/arktype";
 import { useMutation } from "@tanstack/react-query";
-import { orpc } from "@/client";
-import type { LoginInput } from "@/types/auth";
+import { useNavigate } from "@tanstack/react-router";
+import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
+import { AuthSchemas } from "@/api/auth/schemas";
+import { orpc } from "@/client";
+
+type LoginInput = typeof AuthSchemas.login.infer;
+
 export function useLogin() {
+	const navigate = useNavigate();
 	const { mutateAsync } = useMutation(orpc.auth.login.mutationOptions());
 
-	const methods = useForm({
-		resolver: zodResolver(loginSchema),
+	const methods = useForm<LoginInput>({
+		resolver: arktypeResolver(AuthSchemas.login),
 	});
 
 	const onSubmit: SubmitHandler<LoginInput> = async (data) => {
-		try {
-			await mutateAsync(data);
-
-			window.location.href = "/";
-		} catch {
-			toast.error("Login failed", {
-				description: "Invalid name or password",
-				position: "bottom-left",
+		await mutateAsync(data)
+			.then(() => navigate({ to: "/", replace: true }))
+			.catch(() => {
+				toast.error("Login failed", {
+					description: "Invalid name or password",
+					position: "bottom-left",
+				});
 			});
-		}
 	};
 
 	return {
 		methods,
-		onSubmit,
-		FormProvider,
+		handleSubmit: methods.handleSubmit(onSubmit),
 	};
 }

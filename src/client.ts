@@ -1,9 +1,10 @@
-import type { API, WsAPI } from "./server";
 import { createORPCClient } from "@orpc/client";
 import { RPCLink as FetchLink } from "@orpc/client/fetch";
 import { RPCLink as WsLink } from "@orpc/client/websocket";
-import type { RouterClient, InferRouterInputs, InferRouterOutputs } from "@orpc/server";
+import type { RouterClient } from "@orpc/server";
 import { createTanstackQueryUtils } from "@orpc/tanstack-query";
+
+import type { API, WsAPI } from "./server";
 
 const httpLink = new FetchLink({
 	url: new URL("/rpc", window.location.origin).href,
@@ -22,8 +23,3 @@ const wsClient: RouterClient<WsAPI> = createORPCClient(wsLink);
 
 export const orpc = createTanstackQueryUtils(httpClient);
 export const orpcWs = createTanstackQueryUtils(wsClient);
-
-export type RouterOutputs = InferRouterOutputs<API>;
-export type RouterInputs = InferRouterInputs<API>;
-export type WsRouterOutputs = InferRouterOutputs<WsAPI>;
-export type WsRouterInputs = InferRouterInputs<WsAPI>;

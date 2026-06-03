@@ -1,11 +1,27 @@
-import { db } from "./connection";
+import type { Insertable } from "kysely";
+
+import { db, type UsersRow } from "./connection";
 
 export const DbUsers = {
-	getById(id: number) {
-		return db.selectFrom("users").where("id", "=", id).selectAll().executeTakeFirst();
+	async getPublicById(id: number) {
+		return await db
+			.selectFrom("users as u")
+			.where("u.id", "=", id)
+			.select(["u.id", "u.name", "u.user_type"])
+			.executeTakeFirst();
 	},
 
-	getByName(name: string) {
-		return db.selectFrom("users").where("name", "=", name).selectAll().executeTakeFirst();
+	async getByName(name: string) {
+		return await db
+			.selectFrom("users as u")
+			.where("u.name", "=", name)
+			.selectAll("u")
+			.executeTakeFirst();
+	},
+
+	async create(input: Insertable<UsersRow>) {
+		return await db.insertInto("users").values(input).returningAll().executeTakeFirstOrThrow();
 	},
 };
+
+export type PublicUser = NonNullable<Awaited<ReturnType<typeof DbUsers.getPublicById>>>;

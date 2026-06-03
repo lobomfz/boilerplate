@@ -1,24 +1,37 @@
 import { MemoryPublisher } from "@orpc/experimental-publisher/memory";
 
-const publisher = new MemoryPublisher<Record<string, object>>();
-
-type PubSubChannels = {
+interface PubSubChannels {
 	notification: {
+		id: string;
 		title: string;
 		message: string;
 	};
-};
+}
+
+const publisher = new MemoryPublisher<Record<string, object>>();
+
+function keyFor(channel: keyof PubSubChannels, userId: number) {
+	return `${channel}:${userId}`;
+}
 
 export const PubSub = {
-	subscribe<T extends keyof PubSubChannels>(type: T, uuid: string, signal?: AbortSignal) {
-		const key = `${type}:${uuid}`;
-
-		return publisher.subscribe(key, { signal }) as AsyncIterable<PubSubChannels[T]>;
+	subscribe<T extends keyof PubSubChannels>(
+		channel: T,
+		user: { id: number },
+		signal?: AbortSignal,
+	): AsyncIterable<PubSubChannels[T]> {
+		return publisher.subscribe(keyFor(channel, user.id), {
+			signal,
+		}) as AsyncIterable<PubSubChannels[T]>;
 	},
 
-	publish<T extends keyof PubSubChannels>(type: T, uuid: string, data: PubSubChannels[T]) {
-		const key = `${type}:${uuid}`;
+	publish<T extends keyof PubSubChannels>(
+		channel: T,
+		user: { id: number },
+		payload: PubSubChannels[T],
+	) {
+		const key = keyFor(channel, user.id);
 
-		return publisher.publish(key, data);
+		return publisher.publish(key, payload);
 	},
 };
